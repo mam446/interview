@@ -1,0 +1,67 @@
+import random
+import sys
+import time
+import matplotlib
+#matplotlib.use('Agg')
+
+import matplotlib.pyplot as plt
+
+def checkTruth(data):
+    ret = [1]*len(data)
+    s = 1
+    q = len(data)
+    for i in xrange(q):
+        s*=data[i]
+    for i in xrange(q):
+        ret[i] = s/data[i]
+    return ret
+
+def mySol(data):
+    ret = [1]*len(data)
+    s = 1
+    q = len(data)
+    t = q-1
+    d = 1
+    for i in xrange(q):
+        ret[i]*=s
+        s*=data[i]
+        l = t-i
+        ret[l]*=d
+        d*=data[l]
+    return ret
+
+
+x = []
+time1 = []
+time2 = []
+runs = 10
+if len(sys.argv) >2:
+    runs = int(sys.argv[2])
+size =  int(sys.argv[1])
+for i in xrange(10,int(size)):
+    d1 = 0
+    d2 = 0
+    for k in xrange(runs):
+        y = [random.random() for j in xrange(i)]
+
+        
+
+        s1 = time.time()
+        truth = checkTruth(y)
+        e1 = time.time()
+        s2 = time.time()
+        my = mySol(y)
+        e2 = time.time()
+        d1+=e1-s1
+        d2+=e2-s2
+    time1.append(d1/float(runs))
+    time2.append(d2/float(runs))
+    x.append(i)
+
+
+plt.figure(1)
+ax = plt.subplot(111)
+ax.plot(x,time1,x,time2)
+
+plt.savefig("data.png")
+plt.show()

@@ -17,7 +17,7 @@ class singleList(object):
         self.head = singleNode(data,self.head)
         self.length+=1
 
-    def pop(self,data):
+    def pop(self):
         cur = self.head
         if cur:
             self.head = self.head.forward
@@ -32,9 +32,9 @@ class singleList(object):
             self.length-=1
             return True
 
-        while cur.forward and cur.forward!=data:
+        while cur.forward and cur.forward.forward and cur.forward!=data:
             cur = cur.forward
-        if cur.forward:
+        if cur.forward and cur.forward.data==data:
             cur.forward = cur.forward.forward
             self.length-=1
             return True
@@ -65,7 +65,8 @@ class singleList(object):
             cur.forward = new
             new = cur
             cur = nxt
-        self.head = new
+        cur.forward = new
+        self.head = cur
 
 
 
